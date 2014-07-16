@@ -55,14 +55,21 @@
 					});
 				},
 
-				createMessage: function (event, el, data) {
-					var el = $(el).get(0);
-					return {
-						type: socketNamespace,
-						eventType: event.type,
-						selector: String(el.nodeName + (el.id ? '#'+el.id:'') + (el.className ? '.'+el.className.replace(' ','.'):'')).toLowerCase(),
-						data: data
-					};
+				createMessage: function (event, el) {
+					var $el = $(el),
+						el = $el.get(0),
+						message = {
+							type: socketNamespace,
+							eventType: event.type,
+							selector: String(el.nodeName + (el.id ? '#'+el.id:'') + (el.className ? '.'+el.className.replace(' ','.'):'')).toLowerCase(),
+							data: null
+						};
+
+					if ($el.is(':input')) {
+						message.data = $el.val();
+					}
+
+					return message;
 				}
 			};
 
