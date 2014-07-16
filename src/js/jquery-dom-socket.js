@@ -10,6 +10,7 @@
 			args = arguments,
 			options = {},
 			socket = null,
+			socketNamespace = 'js.event',
 
 			methods = {
 				init: function (customOptions) {
@@ -21,7 +22,7 @@
 					if (!socket) {
 						socket = io.connect(options.socketUrl);
 
-						socket.on('js.event', function (message) {
+						socket.on(socketNamespace, function (message) {
 			        methods.messageHandler(message);
 			      });
 					}
@@ -42,7 +43,7 @@
 
 				broadcast: function (message) {
 					//console.log(message);
-					socket.emit('js.event', message);
+					socket.emit(socketNamespace, message);
 				},
 
 				registerEvents: function (el) {
@@ -57,9 +58,9 @@
 				createMessage: function (event, el, data) {
 					var el = $(el).get(0);
 					return {
-						type: 'js.event',
+						type: socketNamespace,
 						eventType: event.type,
-						selector: String(el.nodeName + (el.id ? '#'+el.id:'')/* + (el.classList.length ? '.'+el.classList.join('.'):'')*/).toLowerCase(),
+						selector: String(el.nodeName + (el.id ? '#'+el.id:'') + (el.className ? '.'+el.className.replace(' ','.'):'')).toLowerCase(),
 						data: data
 					};
 				}
