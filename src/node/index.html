@@ -9,6 +9,10 @@
       #submit-btn {
       	transition: width 1s ease-in;
       }
+      #text {
+      	width: 400px;
+      	margin-top: 50px;
+      }
     </style>
   </head>
   <body>
@@ -18,6 +22,11 @@
 			<button id="btn-2" class="btn btn-info">Button 2</button>
 
 			<button id="btn-3" class="btn btn-success">Button 3</button>
+    </div>
+
+    <div class="container">
+    	<textarea class="form-control" id="text"></textarea>
+    	<button id="text-submit" class="btn btn-primary">Submit</button>
     </div>
 
     <script src="/socket.io/socket.io.js"></script>
@@ -55,7 +64,23 @@
 
 				var $el = $(event.target);
 				$el.css('border', '');
-			});;
+			});
+
+			$('#text')
+			.domSocket({
+				socketUrl: 'http://localhost:3000',
+				events: 'change'
+			})
+			.on('js.event.change', function (event, message) {
+				console.log('event found', event, message);
+
+				var $el = $(event.target);
+				$el.css('border', '1px solid red');
+
+				setTimeout(function () {
+					$el.css('border', '');
+				}, 500);
+			});
     </script>
   </body>
 </html>
