@@ -75,6 +75,8 @@
 				console.log('event found', event, message);
 
 				var $el = $(event.target);
+
+				$el.val(message.data);
 				$el.css('border', '1px solid red');
 
 				setTimeout(function () {
